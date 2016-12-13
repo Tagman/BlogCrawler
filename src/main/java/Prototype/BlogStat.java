@@ -1,5 +1,13 @@
 package Prototype;
 
+import edu.uci.ics.crawler4j.crawler.Page;
+import edu.uci.ics.crawler4j.parser.HtmlParseData;
+import edu.uci.ics.crawler4j.url.WebURL;
+
+import java.util.HashSet;
+import java.util.Set;
+
+
 /**
  * Created by chris on 09/12/16.
  */
@@ -11,6 +19,8 @@ public class BlogStat {
     private long totalLinks;
     private long totalWordCount;
     private long totalCommentCount;
+
+    private HashSet<String> visitedURLs;
 
     //relative values
     private double AVG_WordCount;
@@ -26,6 +36,8 @@ public class BlogStat {
         totalArticles = 0;
         totalLinks = 0;
         totalWordCount = 0;
+
+        visitedURLs = null;
 
         /*
           Averages are per article
@@ -94,9 +106,57 @@ public class BlogStat {
         }
     }
 
+    public HashSet<String> addToSet(String href){
+
+        visitedURLs.add(href);
+        return visitedURLs;
+    }
+
+    public boolean checkSet(String href){
+
+        return visitedURLs.contains(href);
+    }
+
+    private int countWords(String text){
+        String trimmed = text.trim();
+        return trimmed.isEmpty() ? 0 : trimmed.split("//s+").length;
+    }
+
+    public boolean processPage(Page page){
+
+        /*
+        First I gonna process all the attributes I can get without HTML parsing via Jericho
+
+        --excluded:
+        Comments(total,max,avg)
+        Attributes including totalArticle
+         */
+        incProcessedPages();
+        visitedURLs.add(page.getWebURL().getURL().toLowerCase());
+
+        HtmlParseData parseData = (HtmlParseData) page.getParseData();
+        Set<WebURL> links = parseData.getOutgoingUrls();
+        incTotalLinks(links.size());
+
+        int wordCount = countWords(parseData.getText());
+
+        incTotalWordCount(wordCount);
+
+        checkMAXWordCount(wordCount);
+
+
+        return true;
+
+
+
+    }
+
+
+
     /*
     TODO add mehthod to process page. Pass necessary arguments (WordCount, LinkCount, CommentCount)
     TODO implement check if page is an article. Needed for the totalArticle attribute
+    TODO implement BlogStatController, the BlogStat should only be a class for values. Operations goto the Controller
      */
 
 
