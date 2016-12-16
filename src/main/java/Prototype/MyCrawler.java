@@ -41,5 +41,20 @@ public class MyCrawler extends WebCrawler {
             blogStat.processPage(page);
         }
 
+        if(blogStat.getProcessedPages() % 50 == 0) {
+            dumpStats();
+        }
+
+    }
+    
+    public void dumpStats(){
+        
+        String[] strings = blogStat.outputStats();
+
+        for (String string : strings) {
+
+            System.out.println(string);
+            
+        }
     }
 }

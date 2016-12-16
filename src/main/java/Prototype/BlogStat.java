@@ -15,7 +15,10 @@ public class BlogStat {
 
     //absolute values
     private int processedPages;
-    private long totalArticles;
+    /*
+    currently no option to check if page is an article or smth else
+     */
+   // private long totalArticles;
     private long totalLinks;
     private long totalWordCount;
     private long totalCommentCount;
@@ -33,7 +36,7 @@ public class BlogStat {
     public BlogStat(){
 
         processedPages = 0;
-        totalArticles = 0;
+       // totalArticles = 0;
         totalLinks = 0;
         totalWordCount = 0;
 
@@ -55,9 +58,13 @@ public class BlogStat {
 
     }
 
+    /*
+
+
     public long incTotalArticles(){
         return totalArticles = totalArticles++;
     }
+    */
 
     public long incTotalLinks(int count){
        return totalLinks += count;
@@ -73,13 +80,13 @@ public class BlogStat {
 
     public double calculateAVGWordCount(){
 
-        return totalWordCount/totalArticles;
+        return totalWordCount/processedPages;
 
     }
 
     public double calculateAVGCommentCount(){
 
-        return totalCommentCount/totalArticles;
+        return totalCommentCount/processedPages;
     }
 
     public int checkMAXWordCount(int count){
@@ -122,6 +129,8 @@ public class BlogStat {
         return trimmed.isEmpty() ? 0 : trimmed.split("//s+").length;
     }
 
+
+
     public boolean processPage(Page page){
 
         /*
@@ -136,18 +145,37 @@ public class BlogStat {
 
         HtmlParseData parseData = (HtmlParseData) page.getParseData();
         Set<WebURL> links = parseData.getOutgoingUrls();
-        incTotalLinks(links.size());
+
+        totalLinks = incTotalLinks(links.size());
 
         int wordCount = countWords(parseData.getText());
 
-        incTotalWordCount(wordCount);
+        totalWordCount = incTotalWordCount(wordCount);
+        AVG_WordCount = calculateAVGWordCount();
 
-        checkMAXWordCount(wordCount);
+        MAX_WordCount = checkMAXWordCount(wordCount);
 
 
         return true;
 
 
+
+    }
+
+    public int getProcessedPages() {
+        return processedPages;
+    }
+
+    public String[] outputStats(){
+
+        String[] outputstrings = new String[4];
+
+        outputstrings[0] = Integer.toString(processedPages);
+        outputstrings[1] = Long.toString(totalWordCount);
+        outputstrings[2] = Double.toString(AVG_WordCount);
+        outputstrings[3] = Long.toString(totalLinks);
+
+        return outputstrings;
 
     }
 
