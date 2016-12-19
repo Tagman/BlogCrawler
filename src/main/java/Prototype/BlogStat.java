@@ -166,6 +166,38 @@ public class BlogStat {
         return processedPages;
     }
 
+    public long getTotalLinks() {
+        return totalLinks;
+    }
+
+    public long getTotalWordCount() {
+        return totalWordCount;
+    }
+
+    public long getTotalCommentCount() {
+        return totalCommentCount;
+    }
+
+    public HashSet<String> getVisitedURLs() {
+        return visitedURLs;
+    }
+
+    public double getAVG_WordCount() {
+        return AVG_WordCount;
+    }
+
+    public double getAVG_CommentCount() {
+        return AVG_CommentCount;
+    }
+
+    public int getMAX_WordCount() {
+        return MAX_WordCount;
+    }
+
+    public int getMAX_CommentCount() {
+        return MAX_CommentCount;
+    }
+
     public String[] outputStats(){
 
         String[] outputstrings = new String[4];

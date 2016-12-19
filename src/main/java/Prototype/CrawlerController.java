@@ -5,13 +5,28 @@ import edu.uci.ics.crawler4j.crawler.CrawlController;
 import edu.uci.ics.crawler4j.fetcher.PageFetcher;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtConfig;
 import edu.uci.ics.crawler4j.robotstxt.RobotstxtServer;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+
+//import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
+import java.util.List;
 
 /**
  * Created by chris on 14/12/16.
  */
 public class CrawlerController {
 
+    //private static final Logger logger = LoggerFactory.getLogger(CrawlerController.class);
+
+    private static final Logger logger = LogManager.getLogger(CrawlerController.class);
+
     public static void main(String[] args){
+
+       // Logger parentLogger = LoggerFactory.getLogger("edu.uci.ics.crawler4j");
+
+
         String crawlStorageFolder = "/home/chris/crawler/data";
         int numberOfCrawlers = 1;
 
@@ -31,9 +46,32 @@ public class CrawlerController {
 
             crawlController.start(MyCrawler.class, numberOfCrawlers);
 
+            /*
+            List<Object> crawlersLocalData = crawlController.getCrawlersLocalData();
+
+            long totalLinks = 0;
+            long totalWordCount = 0;
+            int processedPages = 0;
+
+            for (Object localData : crawlersLocalData) {
+                BlogStat stat = (BlogStat) localData;
+                totalLinks += stat.getTotalLinks();
+                totalWordCount += stat.getTotalWordCount();
+                processedPages += stat.getProcessedPages();
+            }
+
+            logger.info("Aggregated Statistics:");
+            logger.info("\tProcessed Pages: " + processedPages);
+
+            */
+
         }catch (Exception e){
-            System.out.println("Fehler beim CrawlController");
+            logger.error("Fehler bei Initialisierung des Crawler");
         }
+
+
+
+
 
 
     }

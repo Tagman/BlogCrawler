@@ -4,6 +4,12 @@ import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.crawler.WebCrawler;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+//import org.slf4j.Logger;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
+import org.slf4j.LoggerFactory;
+
+
 
 import java.util.regex.Pattern;
 
@@ -20,6 +26,10 @@ public class MyCrawler extends WebCrawler {
 
     BlogStat blogStat;
 
+   // private static  final Logger logger = LoggerFactory.getLogger(MyCrawler.class);
+
+    private static final Logger logger = LogManager.getLogger(MyCrawler.class);
+
     public MyCrawler() {
 
         blogStat = new BlogStat();
@@ -34,7 +44,7 @@ public class MyCrawler extends WebCrawler {
 
     @Override
     public void visit(Page page) {
-        System.out.println("Visited: " + page.getWebURL().getURL());
+        logger.info("Visited: " + page.getWebURL().getURL());
 
         if(page.getParseData() instanceof HtmlParseData){
 
@@ -48,7 +58,8 @@ public class MyCrawler extends WebCrawler {
     }
     
     public void dumpStats(){
-        
+
+        /*
         String[] strings = blogStat.outputStats();
 
         for (String string : strings) {
@@ -56,5 +67,16 @@ public class MyCrawler extends WebCrawler {
             System.out.println(string);
             
         }
+        */
+
+        int id = getMyId();
+
+        logger.info("Crawler " + id + " > Processed Pages " + blogStat.getProcessedPages());
+        /*
+        logger.info("Crawler {} > Total Links found {}", id, blogStat.getTotalLinks());
+        logger.info("Crawler {} > Total Word Count {}", id, blogStat.getTotalWordCount());
+        logger.info("Crawler {} > AVG Word Count {}", id, blogStat.getAVG_WordCount());
+
+        */
     }
 }
