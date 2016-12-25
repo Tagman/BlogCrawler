@@ -51,7 +51,7 @@ public class MyCrawler extends WebCrawler {
             blogStat.processPage(page);
         }
 
-        if(blogStat.getProcessedPages() % 50 == 0) {
+        if(blogStat.getProcessedPages() % 10 == 0) {
             dumpStats();
         }
 
@@ -71,7 +71,11 @@ public class MyCrawler extends WebCrawler {
 
         int id = getMyId();
 
-        logger.info("Crawler " + id + " > Processed Pages " + blogStat.getProcessedPages());
+        logger.info("Crawler " + id + " > Processed Pages: " + blogStat.getProcessedPages());
+        logger.info ("Crawler " + id + " > total word count: " + blogStat.getTotalWordCount());
+        logger.info("Crawler " + id + " > total links: " + blogStat.getTotalLinks());
+        logger.info("Crawler " + id + " > AVG word count: " + blogStat.getAVG_WordCount());
+        logger.info("Crawler " + id + " > MAX Word count: " + blogStat.getMAX_WordCount());
         /*
         logger.info("Crawler {} > Total Links found {}", id, blogStat.getTotalLinks());
         logger.info("Crawler {} > Total Word Count {}", id, blogStat.getTotalWordCount());

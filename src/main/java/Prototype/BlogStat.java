@@ -23,7 +23,7 @@ public class BlogStat {
     private long totalWordCount;
     private long totalCommentCount;
 
-    private HashSet<String> visitedURLs;
+    private Set<String> visitedURLs = new HashSet<>();
 
     //relative values
     private double AVG_WordCount;
@@ -40,7 +40,6 @@ public class BlogStat {
         totalLinks = 0;
         totalWordCount = 0;
 
-        visitedURLs = null;
 
         /*
           Averages are per article
@@ -54,7 +53,7 @@ public class BlogStat {
 
     public int incProcessedPages(){
 
-        return processedPages = processedPages++;
+        return processedPages = ++processedPages;
 
     }
 
@@ -71,7 +70,7 @@ public class BlogStat {
     }
 
     public long incTotalWordCount(int count){
-        return totalWordCount =+ count;
+        return totalWordCount += count;
     }
 
     public long incTotalCommentCount(int count){
@@ -113,7 +112,7 @@ public class BlogStat {
         }
     }
 
-    public HashSet<String> addToSet(String href){
+    public Set<String> addToSet(String href){
 
         visitedURLs.add(href);
         return visitedURLs;
@@ -126,7 +125,7 @@ public class BlogStat {
 
     private int countWords(String text){
         String trimmed = text.trim();
-        return trimmed.isEmpty() ? 0 : trimmed.split("//s+").length;
+        return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
     }
 
 
@@ -149,6 +148,7 @@ public class BlogStat {
         totalLinks = incTotalLinks(links.size());
 
         int wordCount = countWords(parseData.getText());
+
 
         totalWordCount = incTotalWordCount(wordCount);
         AVG_WordCount = calculateAVGWordCount();
@@ -178,7 +178,7 @@ public class BlogStat {
         return totalCommentCount;
     }
 
-    public HashSet<String> getVisitedURLs() {
+    public Set<String> getVisitedURLs() {
         return visitedURLs;
     }
 
