@@ -3,7 +3,9 @@ package Prototype;
 import edu.uci.ics.crawler4j.crawler.Page;
 import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
+import org.jsoup.nodes.Document;
 
+import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
 
@@ -33,7 +35,11 @@ public class BlogStat {
     private int MAX_WordCount;
     private int MAX_CommentCount;
 
+    HTMLParser parser;
+
     public BlogStat(){
+
+        parser = new HTMLParser();
 
         processedPages = 0;
        // totalArticles = 0;
@@ -57,14 +63,6 @@ public class BlogStat {
 
     }
 
-    /*
-
-
-    public long incTotalArticles(){
-        return totalArticles = totalArticles++;
-    }
-    */
-
     public long incTotalLinks(int count){
        return totalLinks += count;
     }
@@ -74,7 +72,7 @@ public class BlogStat {
     }
 
     public long incTotalCommentCount(int count){
-        return totalCommentCount =+ count;
+        return totalCommentCount += count;
     }
 
     public double calculateAVGWordCount(){
@@ -133,7 +131,7 @@ public class BlogStat {
     public boolean processPage(Page page){
 
         /*
-        First I gonna process all the attributes I can get without HTML parsing via Jericho
+        First I gonna process all the attributes I can get without HTML parsing via JSoup
 
         --excluded:
         Comments(total,max,avg)
@@ -147,13 +145,20 @@ public class BlogStat {
 
         totalLinks = incTotalLinks(links.size());
 
-        int wordCount = countWords(parseData.getText());
 
+        int wordCount = countWords(parseData.getText());
 
         totalWordCount = incTotalWordCount(wordCount);
         AVG_WordCount = calculateAVGWordCount();
-
         MAX_WordCount = checkMAXWordCount(wordCount);
+
+        Document doc = parser.parsePage(page);
+        int commentCount = parser.countComments(doc);
+        LocalDate date = parser.getDate(doc);
+
+        totalCommentCount = incTotalCommentCount(commentCount);
+        AVG_CommentCount = calculateAVGCommentCount();
+        MAX_CommentCount = checkMAXCommentCount(commentCount);
 
 
         return true;
