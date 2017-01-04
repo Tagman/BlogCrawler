@@ -5,6 +5,9 @@ import edu.uci.ics.crawler4j.parser.HtmlParseData;
 import edu.uci.ics.crawler4j.url.WebURL;
 import org.jsoup.nodes.Document;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.PrintWriter;
 import java.time.LocalDate;
 import java.util.*;
 
@@ -288,6 +291,111 @@ public class BlogStat {
             System.out.println("Anzahl an Artikel in: " + key + " = " + count);
         }
 
+    }
+
+    public boolean writeStats(){
+
+        LocalDate now = LocalDate.now();
+
+        String target = "Stats" + now.toString() + ".csv";
+
+        try{
+
+            PrintWriter pw = new PrintWriter(new File(target));
+            StringBuilder sb = new StringBuilder();
+
+            sb.append('\n');
+            sb.append("Processed Pages");
+            sb.append(';');
+            sb.append("Total Links");
+            sb.append(';');
+            sb.append("Total WordCount");
+            sb.append(';');
+            sb.append("AVG_WordCount");
+            sb.append(';');
+            sb.append("MAX_WordCount");
+            sb.append(';');
+            sb.append("Total CommentCount");
+            sb.append(';');
+            sb.append("AVG CommentCount");
+            sb.append(';');
+            sb.append("MAX_CommentCount");
+            sb.append(';');
+            sb.append('\n');
+            sb.append(processedPages);
+            sb.append(';');
+            sb.append(totalLinks);
+            sb.append(';');
+            sb.append(totalWordCount);
+            sb.append(';');
+            sb.append(AVG_WordCount);
+            sb.append(';');
+            sb.append(MAX_WordCount);
+            sb.append(';');
+            sb.append(totalCommentCount);
+            sb.append(';');
+            sb.append(AVG_CommentCount);
+            sb.append(';');
+            sb.append(MAX_CommentCount);
+            sb.append('\n');
+            sb.append('\n');
+
+            sb.append("Anzahl an Artikel in");
+            sb.append(';');
+            sb.append("Jahr");
+            sb.append('\n');
+
+            for(Map.Entry<Integer, Map<Integer, Integer>> entry : dateMap.entrySet()) {
+
+                int count = 0;
+                int key = entry.getKey();
+
+                for (Map.Entry<Integer, Integer> deep : entry.getValue().entrySet()) {
+                    count += deep.getValue();
+                }
+
+                sb.append(count);
+                sb.append(';');
+                sb.append(key);
+                sb.append('\n');
+            }
+
+            sb.append('\n');
+            sb.append('\n');
+
+            for(Map.Entry<Integer, Map<Integer, Integer>> entry : dateMap.entrySet()) {
+
+                Integer key = entry.getKey();
+
+
+
+                for (Map.Entry<Integer,Integer> deep : entry.getValue().entrySet()) {
+
+                    System.out.println("Jahr: " + key + " Monat: " + deep.getKey() + " Anzahl an Artikel in Monat: " + deep.getValue());
+
+                    sb.append(key);
+                    sb.append(';');
+                    sb.append(deep.getKey());
+                    sb.append(';');
+                    sb.append(deep.getValue());
+                    sb.append('\n');
+                }
+
+            }
+
+
+
+            pw.write(sb.toString());
+            pw.close();
+            System.out.println("Done");
+
+        }catch (FileNotFoundException e){
+            System.out.println("Datei zum Speichern wurde nicht gefunden");
+        }
+
+
+
+        return true;
     }
 
 

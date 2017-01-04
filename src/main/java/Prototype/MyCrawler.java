@@ -87,6 +87,8 @@ public class MyCrawler extends WebCrawler {
 
         blogStat.dumpDateStats();
 
+        blogStat.writeStats();
+
 
     }
 }
