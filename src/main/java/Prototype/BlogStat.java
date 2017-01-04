@@ -8,6 +8,7 @@ import org.jsoup.nodes.Document;
 import java.time.LocalDate;
 import java.util.HashSet;
 import java.util.Set;
+import java.util.TreeMap;
 
 
 /**
@@ -34,6 +35,9 @@ public class BlogStat {
     //highest relative values
     private int MAX_WordCount;
     private int MAX_CommentCount;
+
+    private TreeMap<Integer, TreeMap<Integer, Integer>> yearMap;
+
 
     HTMLParser parser;
 
@@ -155,6 +159,14 @@ public class BlogStat {
         Document doc = parser.parsePage(page);
         int commentCount = parser.countComments(doc);
         LocalDate date = parser.getDate(doc);
+
+        
+
+
+
+
+
+
 
         totalCommentCount = incTotalCommentCount(commentCount);
         AVG_CommentCount = calculateAVGCommentCount();

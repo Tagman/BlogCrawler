@@ -61,7 +61,12 @@ public class HTMLParser {
 
             logger.info(dateDiv.ownText());
 
-            LocalDate date = LocalDate.parse(dateDiv.ownText(), DateTimeFormatter.ofPattern("dd. MMMM uuuu"));
+            String dateString = dateDiv.ownText();
+
+            LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd. MMMM yyyy", Locale.GERMANY));
+            //LocalDate date = LocalDate.parse(dateString);
+
+            System.out.println(date.toString());
 
             return date;
         }
