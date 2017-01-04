@@ -84,11 +84,9 @@ public class MyCrawler extends WebCrawler {
         logger.info("Crawler " + id + " > total comment count: " + blogStat.getTotalCommentCount());
         logger.info("Crawler " + id + " > AVG comment count: " + blogStat.getAVG_CommentCount());
         logger.info("Crawler " + id + " > MAX comment count: " + blogStat.getMAX_CommentCount());
-        /*
-        logger.info("Crawler {} > Total Links found {}", id, blogStat.getTotalLinks());
-        logger.info("Crawler {} > Total Word Count {}", id, blogStat.getTotalWordCount());
-        logger.info("Crawler {} > AVG Word Count {}", id, blogStat.getAVG_WordCount());
 
-        */
+        blogStat.dumpDateStats();
+
+
     }
 }

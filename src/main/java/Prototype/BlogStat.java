@@ -6,9 +6,7 @@ import edu.uci.ics.crawler4j.url.WebURL;
 import org.jsoup.nodes.Document;
 
 import java.time.LocalDate;
-import java.util.HashSet;
-import java.util.Set;
-import java.util.TreeMap;
+import java.util.*;
 
 
 /**
@@ -36,7 +34,9 @@ public class BlogStat {
     private int MAX_WordCount;
     private int MAX_CommentCount;
 
-    private TreeMap<Integer, TreeMap<Integer, Integer>> yearMap;
+
+
+    private Map<Integer, Map<Integer, Integer>> dateMap;
 
 
     HTMLParser parser;
@@ -44,6 +44,8 @@ public class BlogStat {
     public BlogStat(){
 
         parser = new HTMLParser();
+
+        dateMap = new HashMap<>();
 
         processedPages = 0;
        // totalArticles = 0;
@@ -158,15 +160,11 @@ public class BlogStat {
 
         Document doc = parser.parsePage(page);
         int commentCount = parser.countComments(doc);
+
         LocalDate date = parser.getDate(doc);
-
-        
-
-
-
-
-
-
+        if(date != null){
+            processDate(date);
+        }
 
         totalCommentCount = incTotalCommentCount(commentCount);
         AVG_CommentCount = calculateAVGCommentCount();
@@ -225,6 +223,70 @@ public class BlogStat {
         outputstrings[3] = Long.toString(totalLinks);
 
         return outputstrings;
+
+    }
+
+    public void processDate(LocalDate date){
+
+
+        int year = date.getYear();
+        int month = date.getMonthValue();
+
+
+        /*
+        int year = 2016;
+        int month = 4;
+        */
+
+        if(!dateMap.containsKey(year)){
+
+            dateMap.put(year, new HashMap(){{put(month, 1);}});
+        }
+        else{
+
+            if(!dateMap.get(year).containsKey(month)){
+                dateMap.get(year).put(month, 1);
+            }
+            else{
+                int count = dateMap.get(year).get(month);
+
+                dateMap.get(year).put(month, ++count);
+            }
+        }
+    }
+
+    public void dumpDateStats(){
+
+
+        //Commented out because its too much Info in Console, when every info is printed out
+        //Logging and prints are only test if the methods work
+        //all value will get saved in file, for processing
+
+        /*
+        for(Map.Entry<Integer, Map<Integer, Integer>> entry : dateMap.entrySet()) {
+
+            Integer key = entry.getKey();
+
+            for (Map.Entry<Integer,Integer> deep : entry.getValue().entrySet()) {
+
+                System.out.println("Jahr: " + key + " Monat: " + deep.getKey() + " Anzahl an Artikel in Monat: " + deep.getValue());
+            }
+
+        }
+        */
+
+
+        for(Map.Entry<Integer, Map<Integer, Integer>> entry : dateMap.entrySet()) {
+
+            int count = 0;
+            int key = entry.getKey();
+
+            for (Map.Entry<Integer, Integer> deep : entry.getValue().entrySet()) {
+                count += deep.getValue();
+            }
+
+            System.out.println("Anzahl an Artikel in: " + key + " = " + count);
+        }
 
     }
 

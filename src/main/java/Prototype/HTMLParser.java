@@ -57,14 +57,12 @@ public class HTMLParser {
         Element dateDiv = doc.select("div.single-thumbnail-date").first();
 
         try{
-            Locale germanLocale = new Locale("ger", "ger");
 
             logger.info(dateDiv.ownText());
 
             String dateString = dateDiv.ownText();
 
             LocalDate date = LocalDate.parse(dateString, DateTimeFormatter.ofPattern("dd. MMMM yyyy", Locale.GERMANY));
-            //LocalDate date = LocalDate.parse(dateString);
 
             System.out.println(date.toString());
 
