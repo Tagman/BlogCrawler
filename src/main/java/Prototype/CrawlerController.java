@@ -22,6 +22,7 @@ public class CrawlerController {
 
     private static final Logger logger = LogManager.getLogger(CrawlerController.class);
 
+
     public static void main(String[] args){
 
        // Logger parentLogger = LoggerFactory.getLogger("edu.uci.ics.crawler4j");
@@ -29,6 +30,8 @@ public class CrawlerController {
 
         String crawlStorageFolder = "/home/chris/crawler/data";
         int numberOfCrawlers = 1;
+
+
 
         CrawlConfig config = new CrawlConfig();
         config.setCrawlStorageFolder(crawlStorageFolder);
@@ -64,6 +67,8 @@ public class CrawlerController {
             logger.info("\tProcessed Pages: " + processedPages);
 
             */
+
+
 
         }catch (Exception e){
             logger.error("Fehler bei Initialisierung des Crawler");

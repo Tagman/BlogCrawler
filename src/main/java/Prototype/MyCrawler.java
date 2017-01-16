@@ -54,7 +54,7 @@ public class MyCrawler extends WebCrawler {
 
         }
 
-        if(blogStat.getProcessedPages() % 10 == 0) {
+        if(blogStat.getProcessedPages() % 50 == 0) {
             dumpStats();
         }
 
@@ -87,8 +87,8 @@ public class MyCrawler extends WebCrawler {
 
         blogStat.dumpDateStats();
 
-        blogStat.writeStats();
 
+        blogStat.writeStats();
 
     }
 }
