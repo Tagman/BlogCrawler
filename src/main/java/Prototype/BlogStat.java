@@ -165,17 +165,26 @@ public class BlogStat {
         AVG_WordCount = BlogStat.calculateAVGWordCount();
         MAX_WordCount = BlogStat.checkMAXWordCount(wordCount);
 
+
+
         Document doc = HTMLParser.parsePage(page);
-        int commentCount = HTMLParser.countComments(doc);
 
         LocalDate date = HTMLParser.getDate(doc);
         if(date != null){
             processDate(date);
         }
 
-        totalCommentCount = BlogStat.incTotalCommentCount(commentCount);
-        AVG_CommentCount = BlogStat.calculateAVGCommentCount();
-        MAX_CommentCount = BlogStat.checkMAXCommentCount(commentCount);
+        int commentCount = HTMLParser.countComments(doc);
+
+        if(commentCount != 0){
+            totalCommentCount = BlogStat.incTotalCommentCount(commentCount);
+            AVG_CommentCount = BlogStat.calculateAVGCommentCount();
+            MAX_CommentCount = BlogStat.checkMAXCommentCount(commentCount);
+        }
+
+
+
+
 
 
         return true;
@@ -317,6 +326,8 @@ public class BlogStat {
             sb.append('\n');
             sb.append("Processed Pages");
             sb.append(';');
+            sb.append("Processed Articles");
+            sb.append(';');
             sb.append("Total Links");
             sb.append(';');
             sb.append("Total WordCount");
@@ -333,6 +344,8 @@ public class BlogStat {
             sb.append(';');
             sb.append('\n');
             sb.append(processedPages);
+            sb.append(';');
+            sb.append(processedArticles);
             sb.append(';');
             sb.append(totalLinks);
             sb.append(';');
