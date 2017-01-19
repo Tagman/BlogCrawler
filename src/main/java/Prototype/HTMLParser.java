@@ -23,7 +23,7 @@ public class HTMLParser {
 
     }
 
-    public Document parsePage(Page page) {
+    public static Document parsePage(Page page) {
 
         HtmlParseData htmlParseData = (HtmlParseData) page.getParseData();
         String html = htmlParseData.getHtml();
@@ -32,7 +32,7 @@ public class HTMLParser {
         return Jsoup.parse(html);
     }
 
-    public int countComments(Document doc)
+    public static int countComments(Document doc)
     {
 
         Element commentDiv = doc.select("div#comments").first();
@@ -41,8 +41,14 @@ public class HTMLParser {
 
             String[] splitComment = commentDiv.ownText().split(" ");
 
-            return Integer.parseInt(splitComment[0]);
+            if(splitComment[0].equals("Ein")){
 
+                return 1;
+            }
+            else {
+
+                return Integer.parseInt(splitComment[0]);
+            }
 
         }
         catch (NullPointerException e){
@@ -52,7 +58,7 @@ public class HTMLParser {
 
     }
 
-    public LocalDate getDate(Document doc){
+    public static LocalDate getDate(Document doc){
 
         Element dateDiv = doc.select("div.single-thumbnail-date").first();
 

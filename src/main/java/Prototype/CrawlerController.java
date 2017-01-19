@@ -20,12 +20,15 @@ public class CrawlerController {
 
     //private static final Logger logger = LoggerFactory.getLogger(CrawlerController.class);
 
+    public BlogStat blogStat;
+
     private static final Logger logger = LogManager.getLogger(CrawlerController.class);
 
 
     public static void main(String[] args){
 
        // Logger parentLogger = LoggerFactory.getLogger("edu.uci.ics.crawler4j");
+
 
 
         String crawlStorageFolder = "/home/chris/crawler/data";
@@ -68,6 +71,10 @@ public class CrawlerController {
 
             */
 
+            BlogStat.writeStats();
+
+
+
 
 
         }catch (Exception e){
@@ -80,4 +87,6 @@ public class CrawlerController {
 
 
     }
+
+
 }

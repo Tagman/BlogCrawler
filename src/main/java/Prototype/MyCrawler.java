@@ -24,7 +24,7 @@ public class MyCrawler extends WebCrawler {
             ".*(\\.(css|js|bmp|gif|jpe?g|png|tiff?|mid|mp2|mp3|mp4|wav|avi|mov|mpeg|ram|m4v|pdf" +
                     "|rm|smil|wmv|swf|wma|zip|rar|gz))$");
 
-    BlogStat blogStat;
+    //public BlogStat blogStat;
 
 
    // private static  final Logger logger = LoggerFactory.getLogger(MyCrawler.class);
@@ -33,7 +33,7 @@ public class MyCrawler extends WebCrawler {
 
     public MyCrawler() {
 
-        blogStat = new BlogStat();
+       // blogStat = new BlogStat();
 
     }
 
@@ -41,7 +41,9 @@ public class MyCrawler extends WebCrawler {
     public boolean shouldVisit(Page referringPage, WebURL url){
         String href = url.getURL().toLowerCase();
 
-        return !FILTERS.matcher(href).matches() && href.startsWith("http://www.101places.de/") && !blogStat.checkSet(href);
+        return !FILTERS.matcher(href).matches() && href.startsWith("http://www.101places.de/")
+                && !BlogStat.checkSet(href) && !href.contains("?reply") && !href.contains("/wp-json/")
+                && !href.contains("/page/");
     }
 
     @Override
@@ -50,11 +52,11 @@ public class MyCrawler extends WebCrawler {
 
         if(page.getParseData() instanceof HtmlParseData){
 
-            blogStat.processPage(page);
+            BlogStat.processPage(page);
 
         }
 
-        if(blogStat.getProcessedPages() % 50 == 0) {
+        if(BlogStat.getProcessedPages() % 10 == 0) {
             dumpStats();
         }
 
@@ -74,21 +76,21 @@ public class MyCrawler extends WebCrawler {
 
         int id = getMyId();
 
-        logger.info("Crawler " + id + " > Processed Pages: " + blogStat.getProcessedPages());
-        logger.info("Crawler " + id + " > total links: " + blogStat.getTotalLinks());
+        logger.info("Crawler " + id + " > Processed Pages: " + BlogStat.getProcessedPages());
+        logger.info("Crawler " + id + " > total links: " + BlogStat.getTotalLinks());
 
-        logger.info ("Crawler " + id + " > total word count: " + blogStat.getTotalWordCount());
-        logger.info("Crawler " + id + " > AVG word count: " + blogStat.getAVG_WordCount());
-        logger.info("Crawler " + id + " > MAX Word count: " + blogStat.getMAX_WordCount());
+        logger.info ("Crawler " + id + " > total word count: " + BlogStat.getTotalWordCount());
+        logger.info("Crawler " + id + " > AVG word count: " + BlogStat.getAVG_WordCount());
+        logger.info("Crawler " + id + " > MAX Word count: " + BlogStat.getMAX_WordCount());
 
-        logger.info("Crawler " + id + " > total comment count: " + blogStat.getTotalCommentCount());
-        logger.info("Crawler " + id + " > AVG comment count: " + blogStat.getAVG_CommentCount());
-        logger.info("Crawler " + id + " > MAX comment count: " + blogStat.getMAX_CommentCount());
+        logger.info("Crawler " + id + " > total comment count: " + BlogStat.getTotalCommentCount());
+        logger.info("Crawler " + id + " > AVG comment count: " + BlogStat.getAVG_CommentCount());
+        logger.info("Crawler " + id + " > MAX comment count: " + BlogStat.getMAX_CommentCount());
 
-        blogStat.dumpDateStats();
+        BlogStat.dumpDateStats();
 
 
-        blogStat.writeStats();
+        BlogStat.writeStats();
 
     }
 }

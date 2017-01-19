@@ -18,35 +18,37 @@ import java.util.*;
 public class BlogStat {
 
     //absolute values
-    private int processedPages;
+    private static int processedPages;
     /*
     currently no option to check if page is an article or smth else
      */
    // private long totalArticles;
-    private long totalLinks;
-    private long totalWordCount;
-    private long totalCommentCount;
+    private static long totalLinks;
+    private static long totalWordCount;
+    private static long totalCommentCount;
 
-    private Set<String> visitedURLs = new HashSet<>();
+    private static Set<String> visitedURLs = new HashSet<>();
 
     //relative values
-    private double AVG_WordCount;
-    private double AVG_CommentCount;
+    private static double AVG_WordCount;
+    private static double AVG_CommentCount;
 
     //highest relative values
-    private int MAX_WordCount;
-    private int MAX_CommentCount;
+    private static int MAX_WordCount;
+    private static int MAX_CommentCount;
 
 
 
-    private Map<Integer, Map<Integer, Integer>> dateMap;
 
 
-    HTMLParser parser;
+    private static Map<Integer, Map<Integer, Integer>> dateMap = new HashMap<>();
+
+
+    //static HTMLParser parser;
 
     public BlogStat(){
 
-        parser = new HTMLParser();
+       // parser = new HTMLParser();
 
         dateMap = new HashMap<>();
 
@@ -66,36 +68,36 @@ public class BlogStat {
         MAX_WordCount = 0;
     }
 
-    public int incProcessedPages(){
+    public static int incProcessedPages(){
 
         return processedPages = ++processedPages;
 
     }
 
-    public long incTotalLinks(int count){
+    public static long incTotalLinks(int count){
        return totalLinks += count;
     }
 
-    public long incTotalWordCount(int count){
+    public static long incTotalWordCount(int count){
         return totalWordCount += count;
     }
 
-    public long incTotalCommentCount(int count){
+    public static long incTotalCommentCount(int count){
         return totalCommentCount += count;
     }
 
-    public double calculateAVGWordCount(){
+    public static double calculateAVGWordCount(){
 
         return totalWordCount/processedPages;
 
     }
 
-    public double calculateAVGCommentCount(){
+    public static double calculateAVGCommentCount(){
 
         return totalCommentCount/processedPages;
     }
 
-    public int checkMAXWordCount(int count){
+    public static int checkMAXWordCount(int count){
 
         if(count > MAX_WordCount){
             MAX_WordCount = count;
@@ -108,7 +110,7 @@ public class BlogStat {
         }
     }
 
-    public int checkMAXCommentCount(int count){
+    public static int checkMAXCommentCount(int count){
 
         if(count > MAX_CommentCount){
             MAX_CommentCount = count;
@@ -125,19 +127,19 @@ public class BlogStat {
         return visitedURLs;
     }
 
-    public boolean checkSet(String href){
+    public static boolean checkSet(String href){
 
         return visitedURLs.contains(href);
     }
 
-    private int countWords(String text){
+    private static int countWords(String text){
         String trimmed = text.trim();
         return trimmed.isEmpty() ? 0 : trimmed.split("\\s+").length;
     }
 
 
 
-    public boolean processPage(Page page){
+    public static boolean processPage(Page page){
 
         /*
         First I gonna process all the attributes I can get without HTML parsing via JSoup
@@ -146,32 +148,32 @@ public class BlogStat {
         Comments(total,max,avg)
         Attributes including totalArticle
          */
-        incProcessedPages();
+        BlogStat.incProcessedPages();
         visitedURLs.add(page.getWebURL().getURL().toLowerCase());
 
         HtmlParseData parseData = (HtmlParseData) page.getParseData();
         Set<WebURL> links = parseData.getOutgoingUrls();
 
-        totalLinks = incTotalLinks(links.size());
+        totalLinks = BlogStat.incTotalLinks(links.size());
 
 
-        int wordCount = countWords(parseData.getText());
+        int wordCount = BlogStat.countWords(parseData.getText());
 
-        totalWordCount = incTotalWordCount(wordCount);
-        AVG_WordCount = calculateAVGWordCount();
-        MAX_WordCount = checkMAXWordCount(wordCount);
+        totalWordCount = BlogStat.incTotalWordCount(wordCount);
+        AVG_WordCount = BlogStat.calculateAVGWordCount();
+        MAX_WordCount = BlogStat.checkMAXWordCount(wordCount);
 
-        Document doc = parser.parsePage(page);
-        int commentCount = parser.countComments(doc);
+        Document doc = HTMLParser.parsePage(page);
+        int commentCount = HTMLParser.countComments(doc);
 
-        LocalDate date = parser.getDate(doc);
+        LocalDate date = HTMLParser.getDate(doc);
         if(date != null){
             processDate(date);
         }
 
-        totalCommentCount = incTotalCommentCount(commentCount);
-        AVG_CommentCount = calculateAVGCommentCount();
-        MAX_CommentCount = checkMAXCommentCount(commentCount);
+        totalCommentCount = BlogStat.incTotalCommentCount(commentCount);
+        AVG_CommentCount = BlogStat.calculateAVGCommentCount();
+        MAX_CommentCount = BlogStat.checkMAXCommentCount(commentCount);
 
 
         return true;
@@ -180,19 +182,19 @@ public class BlogStat {
 
     }
 
-    public int getProcessedPages() {
+    public static int getProcessedPages() {
         return processedPages;
     }
 
-    public long getTotalLinks() {
+    public static long getTotalLinks() {
         return totalLinks;
     }
 
-    public long getTotalWordCount() {
+    public static long getTotalWordCount() {
         return totalWordCount;
     }
 
-    public long getTotalCommentCount() {
+    public static long getTotalCommentCount() {
         return totalCommentCount;
     }
 
@@ -200,19 +202,19 @@ public class BlogStat {
         return visitedURLs;
     }
 
-    public double getAVG_WordCount() {
+    public static double getAVG_WordCount() {
         return AVG_WordCount;
     }
 
-    public double getAVG_CommentCount() {
+    public static double getAVG_CommentCount() {
         return AVG_CommentCount;
     }
 
-    public int getMAX_WordCount() {
+    public static int getMAX_WordCount() {
         return MAX_WordCount;
     }
 
-    public int getMAX_CommentCount() {
+    public static int getMAX_CommentCount() {
         return MAX_CommentCount;
     }
 
@@ -229,7 +231,7 @@ public class BlogStat {
 
     }
 
-    public void processDate(LocalDate date){
+    public static void processDate(LocalDate date){
 
 
         int year = date.getYear();
@@ -258,7 +260,7 @@ public class BlogStat {
         }
     }
 
-    public void dumpDateStats(){
+    public static void dumpDateStats(){
 
 
         //Commented out because its too much Info in Console, when every info is printed out
@@ -293,7 +295,7 @@ public class BlogStat {
 
     }
 
-    public boolean writeStats(){
+    public static boolean writeStats(){
 
         LocalDate now = LocalDate.now();
 
@@ -362,6 +364,10 @@ public class BlogStat {
 
             sb.append('\n');
             sb.append('\n');
+
+            sb.append("Jahr;Monat;Anzahl");
+            sb.append('\n');
+
 
             for(Map.Entry<Integer, Map<Integer, Integer>> entry : dateMap.entrySet()) {
 
