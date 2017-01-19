@@ -32,7 +32,7 @@ public class HTMLParser {
         return Jsoup.parse(html);
     }
 
-    public static int countComments(Document doc)
+    public static int countComments(Document  doc)
     {
 
         Element commentDiv = doc.select("div#comments").first();

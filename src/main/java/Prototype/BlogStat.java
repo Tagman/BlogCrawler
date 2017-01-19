@@ -37,6 +37,8 @@ public class BlogStat {
     private static int MAX_WordCount;
     private static int MAX_CommentCount;
 
+    private static int processedArticles;
+
 
 
 
@@ -94,7 +96,7 @@ public class BlogStat {
 
     public static double calculateAVGCommentCount(){
 
-        return totalCommentCount/processedPages;
+        return totalCommentCount/processedArticles;
     }
 
     public static int checkMAXWordCount(int count){
@@ -231,11 +233,17 @@ public class BlogStat {
 
     }
 
+    public static void incProcessedArticles(){
+        processedArticles = ++processedArticles;
+    }
+
     public static void processDate(LocalDate date){
 
 
         int year = date.getYear();
         int month = date.getMonthValue();
+
+        incProcessedArticles();
 
 
         /*
