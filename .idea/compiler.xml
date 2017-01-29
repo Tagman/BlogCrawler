@@ -9,7 +9,7 @@
         <module name="BlogCrawler" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
+    <bytecodeTargetLevel target="1.8">
       <module name="BlogCrawler" target="1.8" />
     </bytecodeTargetLevel>
   </component>

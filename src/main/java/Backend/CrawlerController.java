@@ -1,4 +1,4 @@
-package Prototype;
+package Backend;
 
 import edu.uci.ics.crawler4j.crawler.CrawlConfig;
 import edu.uci.ics.crawler4j.crawler.CrawlController;
@@ -9,9 +9,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 
 //import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 
-import java.util.List;
 
 /**
  * Created by chris on 14/12/16.
@@ -20,7 +18,7 @@ public class CrawlerController {
 
     //private static final Logger logger = LoggerFactory.getLogger(CrawlerController.class);
 
-    public BlogStat blogStat;
+
 
     private static final Logger logger = LogManager.getLogger(CrawlerController.class);
 

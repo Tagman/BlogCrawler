@@ -1,4 +1,4 @@
-package Prototype;
+package Backend;
 
 import edu.uci.ics.crawler4j.url.WebURL;
 
